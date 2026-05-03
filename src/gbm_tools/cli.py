@@ -74,12 +74,22 @@ def inspect(gbm_file: str, section: str | None, vri: int | None) -> None:
 @click.argument("rev_a", type=click.Path(exists=True, dir_okay=False))
 @click.argument("rev_b", type=click.Path(exists=True, dir_okay=False))
 @click.option("--output", "-o", type=click.Path(), help="Errata patch output (.json)")
-def diff(rev_a: str, rev_b: str, output: str | None) -> None:
-    """Compare two .gbm revisions; emit errata patch."""
-    click.echo(f"gbm-diff {__version__}: {rev_a} vs {rev_b}")
+@click.option("--module-id", help="Module identifier to embed in patch")
+def diff(rev_a: str, rev_b: str, output: str | None,
+         module_id: str | None) -> None:
+    """Compare two .gbm revisions; emit errata patch JSON."""
+    import json as _json
+
+    from .diff import diff_modules, write_diff
+
     if output:
-        click.echo(f"  output: {output}")
-    click.echo("  [stub — implementation in diff/ module]")
+        patch = write_diff(rev_a, rev_b, output, module_id=module_id)
+        click.echo(f"gbm-diff {__version__}: wrote {output} "
+                   f"(severity={patch['severity']}, "
+                   f"{len(patch['changes'])} change(s))")
+    else:
+        patch = diff_modules(rev_a, rev_b, module_id=module_id)
+        click.echo(_json.dumps(patch, indent=2, sort_keys=True))
 
 
 @click.command(name="gbm-test")
