@@ -1,5 +1,24 @@
 """Binary format readers/writers and VRI encoding."""
 
+from .gbm_module import (
+    Backlink,
+    BacklinkGroup,
+    BookGenre,
+    BookInfo,
+    Corpus,
+    Footnote,
+    GbmModule,
+    InlineLink,
+    LinkKind,
+    Pericope,
+    PericopeBlock,
+    PericopeBlockKind,
+    VerificationStatus,
+    VersionInfo,
+    Xref,
+)
+from .gbm_reader import GbmReader, read_gbm
+from .gbm_writer import encode_gbm, write_gbm
 from .vri import (
     CORPUS_BIBLE,
     CORPUS_EGW,
@@ -13,13 +32,32 @@ from .vri import (
 )
 
 __all__ = [
+    "Backlink",
+    "BacklinkGroup",
+    "BookGenre",
+    "BookInfo",
     "CORPUS_BIBLE",
     "CORPUS_EGW",
     "CORPUS_SROD",
     "CORPUS_UNKNOWN",
+    "Corpus",
+    "Footnote",
+    "GbmModule",
+    "GbmReader",
+    "InlineLink",
+    "LinkKind",
+    "Pericope",
+    "PericopeBlock",
+    "PericopeBlockKind",
+    "VerificationStatus",
+    "VersionInfo",
     "VriParts",
+    "Xref",
     "decode",
     "encode",
     "encode_from_ari",
+    "encode_gbm",
+    "read_gbm",
     "to_ari",
+    "write_gbm",
 ]

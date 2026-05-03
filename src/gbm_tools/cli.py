@@ -59,16 +59,15 @@ def build(source_dir: str, output: str, corpus: str,
 
 @click.command(name="gbm-inspect")
 @click.argument("gbm_file", type=click.Path(exists=True, dir_okay=False))
-@click.option("--section", help="Dump only the named section (e.g., 'TEXT', 'BACK')")
+@click.option("--section", help="Dump only the named section (e.g., 'text', 'backlinks')")
 @click.option("--vri", type=int, help="Inspect a single VRI verse")
 def inspect(gbm_file: str, section: str | None, vri: int | None) -> None:
     """Read a .gbm file and dump its structure."""
-    click.echo(f"gbm-inspect {__version__}: {gbm_file}")
-    if section:
-        click.echo(f"  section filter: {section}")
-    if vri:
-        click.echo(f"  VRI: {vri:#018x}")
-    click.echo("  [stub — implementation in inspect/ module]")
+    from .inspect import inspect_file
+
+    rc = inspect_file(gbm_file, section=section, vri=vri)
+    if rc != 0:
+        raise SystemExit(rc)
 
 
 @click.command(name="gbm-diff")
